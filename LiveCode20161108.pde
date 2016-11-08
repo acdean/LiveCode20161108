@@ -36,12 +36,18 @@ void initMaze(int i) {
 void draw() {
   
   image(images[foreground], 0, 0);
-  blendMode(BLEND);
+  blendMode(SUBTRACT);
   image(images[(foreground + 1) % 2], 0, 0);
   
   if ((frameCount % FADE) == 0) {
     int background = (foreground + 1) % 2;
     initMaze(background);
     foreground = background;
+  }
+}
+
+void keyPressed() {
+  if (key == 's') {
+    saveFrame("snapshot####.png");
   }
 }
