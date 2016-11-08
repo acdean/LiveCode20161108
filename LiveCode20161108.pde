@@ -2,7 +2,7 @@ final int SZ = 20;
 final int FADE = 100;
 
 boolean[][] maze;
-PImage[] images = new PImage[2];
+PGraphics[] images = new PGraphics[2];
 int foreground = 0;
 
 void setup() {
@@ -13,6 +13,8 @@ void setup() {
 }
 
 void initMaze(int i) {
+  images[i] = createGraphics(width, height);
+  images[i].beginDraw();
   color fg = color(random(128, 192), random(128, 192), random(128, 192));
   color bg = color(random(64), random(64), random(64));
   images[i].background(bg);
@@ -22,19 +24,20 @@ void initMaze(int i) {
   for (int y = 0; y < height / SZ; y++) {
     for (int x = 0; x < width / SZ; x++) {
       if (random(100) < 50) {
-        image.line(x * SZ, y * SZ, (x + 1) * SZ, (y + 1) * SZ);
+        images[i].line(x * SZ, y * SZ, (x + 1) * SZ, (y + 1) * SZ);
       } else {
-        image.line(x * SZ, (y + 1) * SZ, (x + 1) * SZ, y * SZ);
+        images[i].line(x * SZ, (y + 1) * SZ, (x + 1) * SZ, y * SZ);
       }
     }
   }
+  images[i].endDraw();
 }
 
 void draw() {
   
-  image(images[foreground]);
+  image(images[foreground], 0, 0);
   blendMode(BLEND);
-  image(images[(foreground + 1) % 2]);
+  image(images[(foreground + 1) % 2], 0, 0);
   
   if ((frameCount % FADE) == 0) {
     int background = (foreground + 1) % 2;
