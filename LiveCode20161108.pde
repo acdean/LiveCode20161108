@@ -33,7 +33,8 @@ void initMaze(int i) {
   images[i].endDraw();
 }
 
-void draw() {
+// old draw flips screens but the rendering with SUBTRACT is nice
+void oldDraw() {
   
   image(images[foreground], 0, 0);
   blendMode(SUBTRACT);
@@ -44,6 +45,26 @@ void draw() {
     initMaze(background);
     foreground = background;
   }
+}
+
+// this fades between screens, which is what i wanted. bit pedestrian though.
+void draw() {
+  
+  int fade = (frameCount % FADE);
+  float fadeOut = map(fade, 0, FADE, 0, 255);
+  float fadeIn = map(fade, 0, FADE, 255, 0);
+
+  if ((fade) == 0) {
+    int background = (foreground + 1) % 2;
+    initMaze(background);
+    foreground = background;
+  }
+
+  tint(255, fadeOut);
+  image(images[foreground], 0, 0);
+  tint(255, fadeIn);
+  image(images[(foreground + 1) % 2], 0, 0);
+  
 }
 
 void keyPressed() {
